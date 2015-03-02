@@ -55,6 +55,7 @@ module Sprangular
     def current_translations
       if I18n.backend.class == I18n::Backend::Simple
         I18n.backend.load_translations
+
         @translations ||= I18n.backend.send(:translations)
       else
         I18n.backend.backends.last.load_translations
