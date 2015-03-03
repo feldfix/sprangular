@@ -12,15 +12,18 @@ module Sprangular
     def js_environment
       config = ::Spree::Config
       store = Spree::Store.current
-      templates = Hash[
-        Rails.application.assets.each_logical_path.
-        select { |file| file.end_with?('html') }.
-        map do |file|
-          path = digest_assets? ? File.join('/assets', Rails.application.assets[file].digest_path) : asset_path(file)
 
-          [file, path]
-        end
-      ]
+      templates = Rails.cache.fetch :sprangular_templates do
+        Hash[
+          Rails.application.assets.each_logical_path.
+          select { |file| file.end_with?('html') }.
+          map do |file|
+            path = digest_assets? ? File.join('/assets', Rails.application.assets[file].digest_path) : asset_path(file)
+
+            [file, path]
+          end
+        ]
+      end
 
       {
         env: Rails.env,
@@ -42,7 +45,7 @@ module Sprangular
     end
 
     def supported_locales
-      if defined? SpreeI18n
+      @supported_locales ||= if defined? SpreeI18n
         SpreeI18n::Config.supported_locales
       else
         Rails.application.config.i18n.available_locales
@@ -53,21 +56,25 @@ module Sprangular
     # Get relevant translations for front end. For both a simple, and
     # "Chainable" i18n Backend, which is used by spree i18n.
     def current_translations
-      if I18n.backend.class == I18n::Backend::Simple
-        I18n.backend.load_translations
-
-        @translations ||= I18n.backend.send(:translations)
-      else
-        I18n.backend.backends.last.load_translations
-        @translations ||= I18n.backend.backends.last.send(:translations)
+      Rails.cache.fetch :sprangular_translations do
+        @translations ||= if I18n.backend.class == I18n::Backend::Simple
+          I18n.backend.load_translations
+          I18n.backend.send(:translations)
+          f
+        else
+          I18n.backend.backends.last.load_translations
+          I18n.backend.backends.last.send(:translations)
+        end
+        # Return only sprangular keys for js environment
+        @sprangular_translations ||= @translations[I18n.locale][:sprangular]
       end
-      # Return only sprangular keys for js environment
-      @translations[I18n.locale][:sprangular]
     end
 
     def cached_templates
-      Sprangular::Engine.config.cached_paths.inject({}) do |files, dir|
-        cached_templates_for_dir(files, dir)
+      Rails.cache.fetch :sprangular_cached_templates do
+        Sprangular::Engine.config.cached_paths.inject({}) do |files, dir|
+          cached_templates_for_dir(files, dir)
+        end
       end
     end
 
