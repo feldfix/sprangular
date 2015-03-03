@@ -1,6 +1,8 @@
 class Sprangular.User
   init: ->
     @creditCards = []
+    @billingAddresses = Sprangular.extend(@shipping_addresses, Sprangular.Address)
+    @shippingAddresses = Sprangular.extend(@billing_addresses, Sprangular.Address)
     @_mergeAddressLists()
     @orders = Sprangular.extend(@orders, Sprangular.Order)
 
@@ -12,11 +14,16 @@ class Sprangular.User
 
     @allowOneClick = @creditCards.length > 0 && @addresses.length > 0
 
+  serialize: ->
+    _.omit this, (value) ->
+      typeof(value) == 'object' || typeof(value) == 'function' || Array.isArray(value)
+
   _mergeAddressLists: ->
     addresses = []
-    unique = (address) -> addresses[address.id] = Sprangular.extend(address, Sprangular.Address)
+    unique = (address) ->
+      addresses[address.key] = address
 
-    _.each @shipping_addresses, unique
-    _.each @billing_addresses, unique
+    _.each @shippingAddresses, unique
+    _.each @billingAddresses, unique
 
     @addresses = _.values(addresses)
