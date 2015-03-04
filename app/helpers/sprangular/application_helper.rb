@@ -56,7 +56,7 @@ module Sprangular
     # Get relevant translations for front end. For both a simple, and
     # "Chainable" i18n Backend, which is used by spree i18n.
     def current_translations
-      Rails.cache.fetch :sprangular_translations do
+      Rails.cache.fetch [:sprangular_translations, I18n.locale] do
         @translations ||= if I18n.backend.class == I18n::Backend::Simple
           I18n.backend.load_translations
           I18n.backend.send(:translations)
