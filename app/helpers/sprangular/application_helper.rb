@@ -60,7 +60,6 @@ module Sprangular
         @translations ||= if I18n.backend.class == I18n::Backend::Simple
           I18n.backend.load_translations
           I18n.backend.send(:translations)
-          f
         else
           I18n.backend.backends.last.load_translations
           I18n.backend.backends.last.send(:translations)
@@ -71,10 +70,8 @@ module Sprangular
     end
 
     def cached_templates
-      Rails.cache.fetch :sprangular_cached_templates do
-        Sprangular::Engine.config.cached_paths.inject({}) do |files, dir|
-          cached_templates_for_dir(files, dir)
-        end
+      Sprangular::Engine.config.cached_paths.inject({}) do |files, dir|
+        cached_templates_for_dir(files, dir)
       end
     end
 
