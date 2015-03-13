@@ -23,7 +23,7 @@ de:
       account_updated: 'Konto aktualisiert'
       account_update_failed: Konto konnte nicht gespeichert werden
     crud:
-      edit: Ändern
+      edit: Bearbeiten
       new: Neu
       create: Erstellen
       update: Aktualisieren
@@ -44,7 +44,7 @@ de:
       email: Email
       password: Passwort
       password_confirmation: Passwort bestätigen
-      create_account: Konto Anlegen
+      create_account: Konto erstellen
       forgot_password: Passwort vergessen
       update_password: Passwort aktualisieren
       reset_password: Passwort wiederherstellen
@@ -59,13 +59,13 @@ de:
       city: Stadt
       state: Bundesland / Provinz
       country: Land
-      zip: Postleitzahl
+      zip: PLZ
       phone: Telefon
       use_existing: Vorhandene Adresse verwenden
       use_new: Neue Adresse verwenden
-      no_addresses: Keine Adresse in Datenbank
+      no_addresses: Keine Adresse vorhanden
     cart:
-      added_to_cart: Zum Warenkorb hinzugefügt
+      added_to_cart: Warenkorb hinzugefügt
       checkout: Kasse
       my_cart: Warenkorb
       my_empty_cart: Dein Warenkorb ist leer
@@ -75,7 +75,7 @@ de:
       price: Preis
       sub_total:  Zwischensumme
       shipping: Versand
-      tax: Steuer
+      tax: MwSt.
       total: Gesamtbetrag
       empty_cart: Warenkorb leeren
     checkout:
@@ -96,7 +96,7 @@ de:
       success: Erfolgreich
       sub_total: Zwischensumme
       shipping: Versand
-      tax: Steuer
+      tax: MwSt.
       total: Gesamtbetrag
       processing: Wird bearbeitet...
       secure_transaction: sichere Abwicklung
@@ -126,7 +126,7 @@ de:
       ordered_on: Bestellt am
       amount: Betrag
       shipping_state: Sendungsstatus
-      see_details: Details ansehen
+      see_details: Details anzeigen
     promo:
       add: Gutschein hinzufügen
       code: Gutschein
